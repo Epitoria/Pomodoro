@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        :root {
+            /* Default theme (Dark Ocean) */
+            --bg-color: #1a1a2e;
+            --panel-color: #16213e;
+            --text-color: #e6e6e6;
+            --accent-blue: #08d9d6;
+            --accent-green: #00b894;
+            --accent-red: #ff2e63;
+            --accent-yellow: #ffeaa7;
+            --accent-purple: #6c5ce7;
+            --notification-bg: var(--accent-green);
+            --notification-text: black;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        /* Theme definitions */
+        .theme-dark-ocean {
+            --bg-color: #1a1a2e;
+            --panel-color: #16213e;
+            --text-color: #e6e6e6;
+            --accent-blue: #08d9d6;
+            --accent-green: #00b894;
+            --accent-red: #ff2e63;
+            --accent-yellow: #ffeaa7;
+            --accent-purple: #6c5ce7;
+            --notification-bg: var(--accent-green);
+            --notification-text: black;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-warm-cozy {
+            --bg-color: #2d3436;
+            --panel-color: #3a3e4b;
+            --text-color: #f5f6fa;
+            --accent-blue: #74b9ff;
+            --accent-green: #55efc4;
+            --accent-red: #ff7675;
+            --accent-yellow: #fdcb6e;
+            --accent-purple: #a29bfe;
+            --notification-bg: var(--accent-yellow);
+            --notification-text: #2d3436;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-light-minimal {
+            --bg-color: #f9f9f9;
+            --panel-color: #ffffff;
+            --text-color: #333333;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-yellow: #f39c12;
+            --accent-purple: #9b59b6;
+            --notification-bg: var(--accent-blue);
+            --notification-text: white;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-sunset {
+            --bg-color: #2c3e50;
+            --panel-color: #34495e;
+            --text-color: #ecf0f1;
+            --accent-blue: #3498db;
+            --accent-green: #e67e22;
+            --accent-red: #e74c3c;
+            --accent-yellow: #f1c40f;
+            --accent-purple: #9b59b6;
+            --notification-bg: var(--accent-yellow);
+            --notification-text: #2c3e50;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-forest {
+            --bg-color: #1e3f20;
+            --panel-color: #2d5730;
+            --text-color: #e6f5e6;
+            --accent-blue: #4a9b93;
+            --accent-green: #6ab04c;
+            --accent-red: #eb4d4b;
+            --accent-yellow: #f9ca24;
+            --accent-purple: #8e44ad;
+            --notification-bg: var(--accent-yellow);
+            --notification-text: #1e3f20;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-midnight {
+            --bg-color: #0f0f1a;
+            --panel-color: #1a1a2e;
+            --text-color: #d1d1e0;
+            --accent-blue: #5773ff;
+            --accent-green: #4acfac;
+            --accent-red: #ff5e7d;
+            --accent-yellow: #f6e58d;
+            --accent-purple: #c56cf0;
+            --notification-bg: var(--accent-purple);
+            --notification-text: white;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-mystic-berry {
+            --bg-color: #1e0b36;
+            --panel-color: #2a1a4a;
+            --text-color: #e6e6fa;
+            --accent-blue: #9a7bff;
+            --accent-green: #6aefb6;
+            --accent-red: #ff6b8b;
+            --accent-yellow: #ffd166;
+            --accent-purple: #c77dff;
+            --timer-study-color: var(--accent-purple);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-neon-dream {
+            --bg-color: #0a0a12;
+            --panel-color: #14142b;
+            --text-color: #e0e0ff;
+            --accent-blue: #00f5d4;
+            --accent-green: #94fbab;
+            --accent-red: #ff5e5b;
+            --accent-yellow: #fff05a;
+            --accent-purple: #9b5de5;
+            --notification-bg: var(--accent-purple);
+            --notification-text: white;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-coffee {
+            --bg-color: #3a2c2a;
+            --panel-color: #4a3a37;
+            --text-color: #e8d5c5;
+            --accent-blue: #a5a58d;
+            --accent-green: #b7b7a4;
+            --accent-red: #cb997e;
+            --accent-yellow: #ddbea9;
+            --accent-purple: #9c7c6b;
+            --notification-bg: var(--accent-yellow);
+            --notification-text: #3a2c2a;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-ocean-breeze {
+            --bg-color: #e3f2fd;
+            --panel-color: #bbdefb;
+            --text-color: #0d47a1;
+            --accent-blue: #42a5f5;
+            --accent-green: #66bb6a;
+            --accent-red: #ef5350;
+            --accent-yellow: #ffee58;
+            --accent-purple: #ab47bc;
+            --notification-bg: var(--accent-blue);
+            --notification-text: white;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-mystic-purple {
+            --bg-color: #1a1a2e;
+            --panel-color: #16213e;
+            --text-color: #e2e2ff;
+            --accent-blue: #8a4fff;
+            --accent-green: #4acfac;
+            --accent-red: #ff5e7d;
+            --accent-yellow: #f9c74f;
+            --accent-purple: #c56cf0;
+            --notification-bg: var(--accent-purple);
+            --notification-text: white;
+            --timer-study-color: var(--accent-purple);
+            --timer-break-color: var(--accent-green);
+        }
+
+        .theme-sunflower {
+            --bg-color: #fff9c4;
+            --panel-color: #fff59d;
+            --text-color: #5d4037;
+            --accent-blue: #64b5f6;
+            --accent-green: #81c784;
+            --accent-red: #e57373;
+            --accent-yellow: #ffd54f;
+            --accent-purple: #ba68c8;
+            --notification-bg: var(--accent-yellow);
+            --notification-text: #5d4037;
+            --timer-study-color: var(--accent-blue);
+            --timer-break-color: var(--accent-green);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.5;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            transition: all var(--transition-speed) ease;
+        }
+
+        h1 {
+            color: var(--accent-blue);
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .mode-indicator {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .study-mode {
+            color: var(--timer-study-color);
+        }
+
+        .break-mode {
+            color: var(--timer-break-color);
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            color: var(--timer-study-color);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .visual-timer {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            display: flex;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .timer-segment {
+            height: 100%;
+            background: var(--timer-study-color);
+            transition: width 0.5s linear, background var(--transition-speed) ease;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease, background var(--transition-speed) ease, color var(--transition-speed) ease;
+            background: var(--panel-color);
+            color: var(--text-color);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .primary-btn {
+            background: var(--accent-blue);
+            color: black;
+        }
+
+        .danger-btn {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .success-btn {
+            background: var(--accent-green);
+            color: black;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .preset-btn {
+            padding: 12px;
+            background: var(--panel-color);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .preset-btn.active {
+            background: rgba(var(--accent-blue-rgb), 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .break-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-green);
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+            text-align: center;
+            display: none;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .break-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .break-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--accent-green);
+            transition: color var(--transition-speed) ease;
+        }
+
+        .break-timer-container {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.9);
+            border-radius: var(--border-radius);
+            transition: all var(--transition-speed) ease;
+        }
+
+        #breakTimer {
+            font-size: 2.5rem;
+            font-family: 'Courier New', monospace;
+            color: black;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .overwhelm-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            display: none;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .overwhelm-panel.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .overwhelm-content {
+            background: var(--panel-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            transition: all var(--transition-speed) ease;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .overwhelm-panel.show .overwhelm-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .overwhelm-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .overwhelm-option {
+            background: var(--accent-blue);
+            color: black;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease, background var(--transition-speed) ease;
+        }
+
+        .overwhelm-option:hover {
+            transform: scale(1.02);
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+            display: none;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .settings-panel.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .settings-content {
+            background: var(--panel-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transition: all var(--transition-speed) ease;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .settings-panel.show .settings-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .settings-title {
+            color: var(--accent-blue);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .settings-group {
+            margin-bottom: 20px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .settings-group-title {
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .settings-label {
+            display: block;
+            margin-bottom: 8px;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .settings-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 15px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .settings-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .settings-row input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .theme-option {
+            height: 60px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 2px solid transparent;
+            transition: all 0.2s ease, border-color var(--transition-speed) ease;
+            background: var(--panel-color);
+            color: var(--text-color);
+        }
+
+        .theme-option:hover {
+            transform: scale(1.03);
+        }
+
+        .theme-option.active {
+            border-color: var(--accent-yellow);
+            transform: scale(1.05);
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 20px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            display: flex;
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .theme-preview-color {
+            flex: 1;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .confirmation-dialog.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .confirmation-content {
+            background: var(--panel-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transition: all var(--transition-speed) ease;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .confirmation-dialog.show .confirmation-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .minimal-mode .preset-buttons,
+        .minimal-mode .visual-timer,
+        .minimal-mode h1,
+        .minimal-mode .mode-indicator {
+            display: none;
+        }
+
+        .minimal-mode .timer-display {
+            font-size: 5rem;
+            margin: 50px 0;
+        }
+
+        .notification-container {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .notification {
+            background: var(--notification-bg);
+            color: var(--notification-text);
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease, background var(--transition-speed) ease, color var(--transition-speed) ease;
+            margin-bottom: 10px;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.hide {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .brain-dump-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            display: none;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .brain-dump-panel.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .brain-dump-content {
+            background: var(--panel-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            transition: all var(--transition-speed) ease;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .brain-dump-panel.show .brain-dump-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .brain-dump-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color var(--transition-speed) ease;
+        }
+
+        #brainDumpText {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin: 15px 0;
+            resize: vertical;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .custom-sound-input {
+            margin-top: 10px;
+            width: 100%;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .skip-break-btn {
+            margin-top: 20px;
+            width: 100%;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .settings-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .reset-app-btn {
+            grid-column: span 2;
+            background: var(--accent-red);
+            color: white;
+        }
+
+        #closeSettingsBtn {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn var(--transition-speed) ease forwards;
+        }
+
+        .slide-up {
+            animation: slideUp var(--transition-speed) ease forwards;
+        }
+
+        @media (max-width: 500px) {
+            .controls, .preset-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .theme-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .timer-display {
+                font-size: 3rem;
+            }
+
+            .settings-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .reset-app-btn {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body class="theme-dark-ocean">
+    <div class="container" id="mainContainer">
+        <h1>Pomodoro Timer</h1>
+        
+        <div class="mode-indicator">
+            <span id="modeText">SELECT A PRESET</span>
+        </div>
+        
+        <div class="timer-display" id="timerDisplay">00:00</div>
+        
+        <div class="visual-timer" id="visualTimer">
+            <div class="timer-segment" id="timerSegment"></div>
+        </div>
+        
+        <div class="controls">
+            <button class="primary-btn" id="startBtn">START</button>
+            <button class="danger-btn" id="stopBtn">STOP</button>
+            <button id="pauseBtn">PAUSE</button>
+            <button id="overwhelmBtn">I'M STUCK</button>
+        </div>
+
+        <div class="preset-buttons">
+            <button class="preset-btn" id="preset-25-5" data-study="25" data-break="5">Classic Pomodoro (25/5)</button>
+            <button class="preset-btn" id="preset-15-5" data-study="15" data-break="5">Quick Focus (15/5)</button>
+            <button class="preset-btn" id="preset-45-15" data-study="45" data-break="15">Deep Work (45/15)</button>
+            <button class="preset-btn" id="preset-10-3" data-study="10" data-break="3">Micro Sessions (10/3)</button>
+            <button class="preset-btn" id="preset-52-17" data-study="52" data-break="17">52/17 Method</button>
+            <button class="preset-btn" id="customPresetBtn">Custom</button>
+        </div>
+        
+        <button id="settingsBtn">Settings</button>
+        <button id="minimalToggle">Minimal Mode</button>
+    </div>
+    
+    <div class="break-screen" id="breakScreen">
+        <div class="break-content">
+            <div class="break-title">BREAK TIME!</div>
+            <p>Time to recharge</p>
+            
+            <div class="break-timer-container">
+                <div id="breakTimer">05:00</div>
+                <div>Time remaining</div>
+            </div>
+            
+            <button class="skip-break-btn primary-btn" id="skipBreakBtn">SKIP BREAK</button>
+        </div>
+    </div>
+    
+    <div class="overwhelm-panel" id="overwhelmPanel">
+        <div class="overwhelm-content">
+            <button class="overwhelm-close" id="overwhelmClose">&times;</button>
+            <h2>Need help focusing?</h2>
+            <div class="overwhelm-option" id="twoMoreMinutes">Just do 2 more minutes</div>
+            <div class="overwhelm-option" id="movementBreak">Take a movement break</div>
+            <div class="overwhelm-option" id="brainDump">Write down what's hard</div>
+        </div>
+    </div>
+    
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-content">
+            <div class="settings-title">Settings</div>
+            
+            <div class="settings-group">
+                <div class="settings-group-title">Timer Durations</div>
+                <div class="settings-row">
+                    <label class="settings-label">Study Minutes:</label>
+                    <input type="number" id="studyDuration" class="settings-input" placeholder="25" min="1">
+                </div>
+                <div class="settings-row">
+                    <label class="settings-label">Break Minutes:</label>
+                    <input type="number" id="breakDuration" class="settings-input" placeholder="5" min="1">
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <div class="settings-group-title">Theme</div>
+                <div class="theme-options">
+                    <div class="theme-option" data-theme="dark-ocean">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #1a1a2e;"></div>
+                            <div class="theme-preview-color" style="background: #08d9d6;"></div>
+                            <div class="theme-preview-color" style="background: #ff2e63;"></div>
+                        </div>
+                        Dark Ocean
+                    </div>
+                    <div class="theme-option" data-theme="warm-cozy">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #2d3436;"></div>
+                            <div class="theme-preview-color" style="background: #74b9ff;"></div>
+                            <div class="theme-preview-color" style="background: #ff7675;"></div>
+                        </div>
+                        Warm Cozy
+                    </div>
+                    <div class="theme-option" data-theme="light-minimal">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #f9f9f9;"></div>
+                            <div class="theme-preview-color" style="background: #3498db;"></div>
+                            <div class="theme-preview-color" style="background: #e74c3c;"></div>
+                        </div>
+                        Light Minimal
+                    </div>
+                    <div class="theme-option" data-theme="sunset">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #2c3e50;"></div>
+                            <div class="theme-preview-color" style="background: #e67e22;"></div>
+                            <div class="theme-preview-color" style="background: #e74c3c;"></div>
+                        </div>
+                        Sunset
+                    </div>
+                    <div class="theme-option" data-theme="forest">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #1e3f20;"></div>
+                            <div class="theme-preview-color" style="background: #6ab04c;"></div>
+                            <div class="theme-preview-color" style="background: #eb4d4b;"></div>
+                        </div>
+                        Forest
+                    </div>
+                    <div class="theme-option" data-theme="midnight">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #0f0f1a;"></div>
+                            <div class="theme-preview-color" style="background: #5773ff;"></div>
+                            <div class="theme-preview-color" style="background: #ff5e7d;"></div>
+                        </div>
+                        Midnight
+                    </div>
+                    <div class="theme-option" data-theme="mystic-berry">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #fff0f5;"></div>
+                            <div class="theme-preview-color" style="background: #ff9ff3;"></div>
+                            <div class="theme-preview-color" style="background: #ff6b81;"></div>
+                        </div>
+                        Mystic Berry
+                    </div>
+                    <div class="theme-option" data-theme="neon-dream">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #0a0a12;"></div>
+                            <div class="theme-preview-color" style="background: #00f5d4;"></div>
+                            <div class="theme-preview-color" style="background: #ff5e5b;"></div>
+                        </div>
+                        Neon Dream
+                    </div>
+                    <div class="theme-option" data-theme="coffee">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #3a2c2a;"></div>
+                            <div class="theme-preview-color" style="background: #a5a58d;"></div>
+                            <div class="theme-preview-color" style="background: #cb997e;"></div>
+                        </div>
+                        Coffee
+                    </div>
+                    <div class="theme-option" data-theme="ocean-breeze">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #e3f2fd;"></div>
+                            <div class="theme-preview-color" style="background: #42a5f5;"></div>
+                            <div class="theme-preview-color" style="background: #ef5350;"></div>
+                        </div>
+                        Ocean Breeze
+                    </div>
+                    <div class="theme-option" data-theme="mystic-purple">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #1a1a2e;"></div>
+                            <div class="theme-preview-color" style="background: #8a4fff;"></div>
+                            <div class="theme-preview-color" style="background: #ff5e7d;"></div>
+                        </div>
+                        Mystic Purple
+                    </div>
+                    <div class="theme-option" data-theme="sunflower">
+                        <div class="theme-preview">
+                            <div class="theme-preview-color" style="background: #fff9c4;"></div>
+                            <div class="theme-preview-color" style="background: #ffd54f;"></div>
+                            <div class="theme-preview-color" style="background: #e57373;"></div>
+                        </div>
+                        Sunflower
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <div class="settings-group-title">Sounds</div>
+                
+                <div class="settings-row">
+                    <input type="checkbox" id="studySoundEnabled" checked>
+                    <label for="studySoundEnabled">Play sound when study starts</label>
+                </div>
+                
+                <div class="settings-row">
+                    <label>Custom study start sound:</label>
+                    <input type="file" id="customStudySoundFile" class="custom-sound-input" accept="audio/*">
+                </div>
+                
+                <div class="settings-row" style="margin-top: 20px;">
+                    <input type="checkbox" id="breakSoundEnabled" checked>
+                    <label for="breakSoundEnabled">Play sound when break starts</label>
+                </div>
+                
+                <div class="settings-row">
+                    <label>Custom break start sound:</label>
+                    <input type="file" id="customBreakSoundFile" class="custom-sound-input" accept="audio/*">
+                </div>
+            </div>
+            
+            <div class="settings-buttons">
+                <button class="primary-btn" id="saveSettingsBtn">Save Settings</button>
+                <button id="closeSettingsBtn">Cancel</button>
+                <button class="reset-app-btn" id="resetAppBtn">Reset Application</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="confirmation-dialog" id="confirmationDialog">
+        <div class="confirmation-content">
+            <p>Are you sure you want to quit?</p>
+            <p>Your current session will be saved automatically.</p>
+            <div class="confirmation-buttons">
+                <button class="danger-btn" id="confirmQuitBtn">Quit</button>
+                <button id="cancelQuitBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="confirmation-dialog" id="resetConfirmationDialog">
+        <div class="confirmation-content">
+            <p>Are you sure you want to reset the application?</p>
+            <p>This will delete all your settings and return everything to default values.</p>
+            <div class="confirmation-buttons">
+                <button class="danger-btn" id="confirmResetBtn">Reset</button>
+                <button id="cancelResetBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="brain-dump-panel" id="brainDumpPanel">
+        <div class="brain-dump-content">
+            <button class="brain-dump-close" id="brainDumpClose">&times;</button>
+            <h2>What's on your mind?</h2>
+            <textarea id="brainDumpText" placeholder="Write down anything that's distracting you..."></textarea>
+            <button id="saveBrainDump" class="primary-btn">Capture Thought</button>
+        </div>
+    </div>
+
+    <div class="notification-container">
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="customStudySound" preload="auto"></audio>
+    <audio id="customBreakSound" preload="auto"></audio>
+
+    <script>
+        class PomodoroTimer {
+            constructor() {
+                // Timer settings
+                this.studyTime = 0;
+                this.breakTime = 0;
+                this.customStudyTime = 25;
+                this.customBreakTime = 5;
+                this.timeLeft = 0;
+                this.totalTime = 0;
+                this.isRunning = false;
+                this.isBreak = false;
+                this.timer = null;
+                this.minimalMode = false;
+                this.activeNotification = null;
+                this.userInteracted = false;
+                this.currentTheme = 'dark-ocean';
+                this.wasPausedByVisibilityChange = false;
+                this.lastUpdateTime = 0;
+                this.pausedTimeLeft = 0;
+                this.notificationQueue = [];
+                this.isShowingNotification = false;
+                
+                // Default settings
+                this.settings = {
+                    studySoundEnabled: true,
+                    breakSoundEnabled: true,
+                    customStudySound: null,
+                    customBreakSound: null,
+                    theme: 'dark-ocean'
+                };
+                
+                // Initialize
+                this.initElements();
+                this.bindEvents();
+                this.loadSettings();
+                this.updateDisplay();
+                
+                // Setup visibility change handler
+                document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+                
+                // Setup beforeunload handler
+                this.setupBeforeUnload();
+            }
+            
+            initElements() {
+                // Main elements
+                this.container = document.getElementById('mainContainer');
+                this.timerDisplay = document.getElementById('timerDisplay');
+                this.breakTimerDisplay = document.getElementById('breakTimer');
+                this.visualTimer = document.getElementById('visualTimer');
+                this.timerSegment = document.getElementById('timerSegment');
+                this.modeText = document.getElementById('modeText');
+                
+                // Buttons
+                this.startBtn = document.getElementById('startBtn');
+                this.pauseBtn = document.getElementById('pauseBtn');
+                this.stopBtn = document.getElementById('stopBtn');
+                this.overwhelmBtn = document.getElementById('overwhelmBtn');
+                this.minimalToggle = document.getElementById('minimalToggle');
+                this.settingsBtn = document.getElementById('settingsBtn');
+                this.customPresetBtn = document.getElementById('customPresetBtn');
+                this.skipBreakBtn = document.getElementById('skipBreakBtn');
+                this.resetAppBtn = document.getElementById('resetAppBtn');
+                
+                // Presets
+                this.presetButtons = document.querySelectorAll('.preset-btn');
+                
+                // Screens
+                this.breakScreen = document.getElementById('breakScreen');
+                this.overwhelmPanel = document.getElementById('overwhelmPanel');
+                this.overwhelmClose = document.getElementById('overwhelmClose');
+                this.settingsPanel = document.getElementById('settingsPanel');
+                this.confirmationDialog = document.getElementById('confirmationDialog');
+                this.resetConfirmationDialog = document.getElementById('resetConfirmationDialog');
+                this.notificationEl = document.getElementById('notification');
+                
+                // Settings elements
+                this.studyDurationInput = document.getElementById('studyDuration');
+                this.breakDurationInput = document.getElementById('breakDuration');
+                this.studySoundCheck = document.getElementById('studySoundEnabled');
+                this.breakSoundCheck = document.getElementById('breakSoundEnabled');
+                this.saveSettingsBtn = document.getElementById('saveSettingsBtn');
+                this.closeSettingsBtn = document.getElementById('closeSettingsBtn');
+                this.customStudySoundFile = document.getElementById('customStudySoundFile');
+                this.customBreakSoundFile = document.getElementById('customBreakSoundFile');
+                this.themeOptions = document.querySelectorAll('.theme-option');
+                
+                // Confirmation dialog
+                this.confirmQuitBtn = document.getElementById('confirmQuitBtn');
+                this.cancelQuitBtn = document.getElementById('cancelQuitBtn');
+                this.confirmResetBtn = document.getElementById('confirmResetBtn');
+                this.cancelResetBtn = document.getElementById('cancelResetBtn');
+                
+                // Overwhelm options
+                this.twoMoreMinutes = document.getElementById('twoMoreMinutes');
+                this.movementBreak = document.getElementById('movementBreak');
+                this.brainDump = document.getElementById('brainDump');
+                this.brainDumpPanel = document.getElementById('brainDumpPanel');
+                this.brainDumpClose = document.getElementById('brainDumpClose');
+                this.brainDumpText = document.getElementById('brainDumpText');
+                this.saveBrainDump = document.getElementById('saveBrainDump');
+                
+                // Sound elements
+                this.customStudySound = document.getElementById('customStudySound');
+                this.customBreakSound = document.getElementById('customBreakSound');
+            }
+            
+            handleVisibilityChange() {
+                // Timer continues running in background
+                // Just ensure UI is updated when coming back
+                if (!document.hidden) {
+                    this.updateDisplay();
+                }
+            }
+            
+            setupBeforeUnload() {
+                window.addEventListener('beforeunload', (e) => {
+                    if (this.isRunning) {
+                        e.preventDefault();
+                        e.returnValue = '';
+                        this.showQuitConfirmation();
+                        return 'You have an active timer. Are you sure you want to quit?';
+                    }
+                });
+            }
+            
+            showQuitConfirmation() {
+                if (this.isRunning) {
+                    this.pauseTimer();
+                }
+                this.confirmationDialog.classList.add('show');
+            }
+            
+            unlockAudio() {
+                if (this.userInteracted) return;
+                this.userInteracted = true;
+                const soundsToUnlock = [
+                    this.customStudySound, 
+                    this.customBreakSound
+                ];
+                
+                soundsToUnlock.forEach(sound => {
+                    if (sound) {
+                        const playPromise = sound.play();
+                        if (playPromise !== undefined) {
+                            playPromise.then(() => {
+                                sound.pause();
+                                sound.currentTime = 0;
+                            }).catch(() => {});
+                        }
+                    }
+                });
+            }
+
+            bindEvents() {
+                // Timer controls
+                this.startBtn.addEventListener('click', () => this.startTimer());
+                this.pauseBtn.addEventListener('click', () => this.pauseTimer());
+                this.stopBtn.addEventListener('click', () => this.stopTimer());
+                this.overwhelmBtn.addEventListener('click', () => this.showOverwhelmPanel());
+                this.minimalToggle.addEventListener('click', () => this.toggleMinimalMode());
+                this.settingsBtn.addEventListener('click', () => this.showSettings());
+                this.skipBreakBtn.addEventListener('click', () => this.endBreak());
+                this.resetAppBtn.addEventListener('click', () => this.showResetConfirmation());
+                
+                // Presets
+                this.presetButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        // Skip if timer is running
+                        if (this.isRunning) return;
+                        
+                        if (btn.classList.contains('active')) {
+                            btn.classList.remove('active');
+                            this.studyTime = 0;
+                            this.breakTime = 0;
+                            this.resetTimer();
+                            this.modeText.textContent = 'SELECT A PRESET';
+                        } else {
+                            this.studyTime = parseInt(btn.dataset.study);
+                            this.breakTime = parseInt(btn.dataset.break);
+                            this.timeLeft = this.studyTime * 60;
+                            this.totalTime = this.studyTime * 60;
+                            this.updateDisplay();
+                            this.queueNotification(`Preset selected: ${btn.textContent}`);
+                            
+                            this.presetButtons.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            
+                            this.modeText.textContent = 'READY';
+                            this.modeText.className = '';
+                        }
+                    });
+                });
+
+                this.customPresetBtn.addEventListener('click', () => {
+                    // Skip if timer is running
+                    if (this.isRunning) return;
+                    
+                    this.studyTime = this.customStudyTime;
+                    this.breakTime = this.customBreakTime;
+                    this.timeLeft = this.studyTime * 60;
+                    this.totalTime = this.studyTime * 60;
+                    this.updateDisplay();
+                    this.queueNotification(`Custom preset: ${this.studyTime}/${this.breakTime}`);
+                    
+                    this.presetButtons.forEach(b => b.classList.remove('active'));
+                    this.customPresetBtn.classList.add('active');
+                    
+                    this.modeText.textContent = 'READY';
+                    this.modeText.className = '';
+                });
+                
+                // Overwhelm options
+                this.twoMoreMinutes.addEventListener('click', () => {
+                    this.studyTime = 2;
+                    this.resetTimer();
+                    this.startTimer();
+                    this.hideOverwhelmPanel();
+                    this.queueNotification("Just 2 more minutes - you got this!");
+                });
+                
+                this.movementBreak.addEventListener('click', () => {
+                    this.startBreak(1); // 1 minute movement break
+                    this.hideOverwhelmPanel();
+                    this.queueNotification("Take a quick movement break");
+                });
+                
+                this.brainDump.addEventListener('click', () => {
+                    this.hideOverwhelmPanel();
+                    this.brainDumpPanel.classList.add('show');
+                });
+
+                this.brainDumpClose.addEventListener('click', () => {
+                    this.brainDumpPanel.classList.remove('show');
+                });
+
+                this.saveBrainDump.addEventListener('click', () => {
+                    const thought = this.brainDumpText.value;
+                    if (thought) {
+                        console.log("Captured thought:", thought);
+                        this.queueNotification("Thought captured. Now back to work!");
+                        this.brainDumpText.value = '';
+                    }
+                    this.brainDumpPanel.classList.remove('show');
+                });
+                
+                this.overwhelmClose.addEventListener('click', () => {
+                    this.hideOverwhelmPanel();
+                });
+                
+                this.overwhelmPanel.addEventListener('click', (e) => {
+                    if (e.target === this.overwhelmPanel) {
+                        this.hideOverwhelmPanel();
+                    }
+                });
+                
+                // Theme selection
+                this.themeOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const theme = option.dataset.theme;
+                        this.themeOptions.forEach(opt => opt.classList.remove('active'));
+                        option.classList.add('active');
+                        this.currentTheme = theme;
+                    });
+                });
+                
+                // Settings
+                this.saveSettingsBtn.addEventListener('click', () => this.saveSettings());
+                this.closeSettingsBtn.addEventListener('click', () => this.hideSettings());
+
+                this.customStudySoundFile.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            this.settings.customStudySound = event.target.result;
+                            this.customStudySound.src = this.settings.customStudySound;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+                this.customBreakSoundFile.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            this.settings.customBreakSound = event.target.result;
+                            this.customBreakSound.src = this.settings.customBreakSound;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                // Confirmation dialogs
+                this.confirmQuitBtn.addEventListener('click', () => {
+                    this.stopTimer();
+                    this.saveSettings();
+                    this.confirmationDialog.classList.remove('show');
+                    window.close();
+                });
+                this.cancelQuitBtn.addEventListener('click', () => {
+                    this.confirmationDialog.classList.remove('show');
+                    if (this.isRunning) {
+                        this.startTimer(); // Resume timer if canceled
+                    }
+                });
+                
+                this.confirmResetBtn.addEventListener('click', () => {
+                    this.resetApplication();
+                    this.resetConfirmationDialog.classList.remove('show');
+                });
+                this.cancelResetBtn.addEventListener('click', () => {
+                    this.resetConfirmationDialog.classList.remove('show');
+                });
+                
+                document.body.addEventListener('click', () => this.unlockAudio(), { once: true });
+            }
+            
+            showResetConfirmation() {
+                this.resetConfirmationDialog.classList.add('show');
+            }
+            
+            resetApplication() {
+                // Stop any running timers
+                this.stopTimer();
+                
+                // Reset all timer values to default
+                this.studyTime = 0;
+                this.breakTime = 0;
+                this.customStudyTime = 25;
+                this.customBreakTime = 5;
+                this.timeLeft = 0;
+                this.totalTime = 0;
+                this.isRunning = false;
+                this.isBreak = false;
+                this.minimalMode = false;
+                
+                // Reset settings to default
+                this.settings = {
+                    studySoundEnabled: true,
+                    breakSoundEnabled: true,
+                    customStudySound: null,
+                    customBreakSound: null,
+                    theme: 'dark-ocean'
+                };
+                
+                // Clear any active preset
+                this.presetButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Reset UI elements
+                this.timerDisplay.textContent = '00:00';
+                this.timerSegment.style.width = '0%';
+                this.modeText.textContent = 'SELECT A PRESET';
+                this.modeText.className = '';
+                this.startBtn.textContent = 'START';
+                
+                // Reset settings inputs
+                this.studyDurationInput.value = this.customStudyTime;
+                this.breakDurationInput.value = this.customBreakTime;
+                this.studySoundCheck.checked = this.settings.studySoundEnabled;
+                this.breakSoundCheck.checked = this.settings.breakSoundEnabled;
+                
+                // Reset theme
+                this.currentTheme = 'dark-ocean';
+                document.body.className = 'theme-dark-ocean';
+                
+                // Clear custom sounds
+                this.customStudySound.src = '';
+                this.customBreakSound.src = '';
+                this.customStudySoundFile.value = '';
+                this.customBreakSoundFile.value = '';
+                
+                // Clear localStorage
+                localStorage.removeItem('pomodoroSettings');
+                
+                // Update theme selection
+                this.themeOptions.forEach(opt => opt.classList.remove('active'));
+                document.querySelector('.theme-option[data-theme="dark-ocean"]').classList.add('active');
+                
+                // Exit minimal mode if active
+                this.container.classList.remove('minimal-mode');
+                this.minimalToggle.textContent = 'Minimal Mode';
+                
+                this.queueNotification("Application reset to default settings");
+                this.hideSettings();
+            }
+            
+            startTimer() {
+                if (!this.isRunning && this.studyTime > 0) {
+                    this.isRunning = true;
+                    this.isBreak = false;
+                    
+                    // If resuming from pause, use the paused time left
+                    if (this.pausedTimeLeft > 0) {
+                        this.timeLeft = this.pausedTimeLeft;
+                        this.pausedTimeLeft = 0;
+                    } else {
+                        // Starting fresh
+                        this.timeLeft = this.studyTime * 60;
+                    }
+                    
+                    this.totalTime = this.studyTime * 60;
+                    this.startTime = Date.now() - ((this.totalTime - this.timeLeft) * 1000);
+                    
+                    // Play study start sound if enabled
+                    if (this.settings.studySoundEnabled && this.customStudySound.src) {
+                        this.customStudySound.currentTime = 0;
+                        this.customStudySound.play().catch(() => {});
+                    }
+                    
+                    // Lock preset buttons
+                    this.presetButtons.forEach(btn => btn.disabled = true);
+                    this.customPresetBtn.disabled = true;
+                    
+                    this.timer = setInterval(() => this.updateTimer(), 1000);
+                    
+                    this.startBtn.textContent = 'FOCUSING...';
+                    this.modeText.textContent = 'FOCUS MODE';
+                    this.modeText.className = 'study-mode';
+                    
+                    this.queueNotification(`Started ${this.studyTime} minute focus session!`);
+                    this.vibrate([100, 50, 100]);
+                    
+                    // Auto-hide break screen if shown
+                    this.breakScreen.style.display = 'none';
+                } else if (this.studyTime <= 0) {
+                    this.queueNotification("Please select a preset first!");
+                }
+            }
+            
+            updateTimer() {
+                const now = Date.now();
+                if (now - this.lastUpdateTime < 900) return; // Throttle updates
+                this.lastUpdateTime = now;
+                
+                const elapsed = Math.floor((now - this.startTime) / 1000);
+                this.timeLeft = Math.max(0, this.totalTime - elapsed);
+                
+                this.updateDisplay();
+                
+                if (this.timeLeft <= 0) {
+                    this.completeSession();
+                }
+            }
+            
+            completeSession() {
+                clearInterval(this.timer);
+                this.isRunning = false;
+                
+                this.queueNotification(`Great job! ${this.studyTime} minutes of focus complete!`);
+                this.vibrate([200, 100, 200]);
+                
+                this.startBreak();
+            }
+            
+            startBreak(overrideTime) {
+                this.isBreak = true;
+                const breakDuration = overrideTime || this.breakTime;
+                this.breakTimeLeft = breakDuration * 60;
+                this.totalBreakTime = breakDuration * 60;
+                
+                // Play break start sound if enabled
+                if (this.settings.breakSoundEnabled && this.customBreakSound.src) {
+                    this.customBreakSound.currentTime = 0;
+                    this.customBreakSound.play().catch(() => {});
+                }
+                
+                this.breakScreen.style.display = 'flex';
+                this.breakTimerDisplay.textContent = `${breakDuration.toString().padStart(2, '0')}:00`;
+                this.modeText.textContent = 'BREAK MODE';
+                this.modeText.className = 'break-mode';
+                
+                this.breakTimer = setInterval(() => {
+                    this.breakTimeLeft--;
+                    const minutes = Math.floor(this.breakTimeLeft / 60);
+                    const seconds = this.breakTimeLeft % 60;
+                    this.breakTimerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (this.breakTimeLeft <= 0) {
+                        this.endBreak();
+                    }
+                }, 1000);
+                
+                // Auto-resume after break if no override
+                if (!overrideTime) {
+                    setTimeout(() => {
+                        if (this.isBreak) {
+                            this.endBreak();
+                        }
+                    }, breakDuration * 60 * 1000);
+                }
+            }
+            
+            endBreak() {
+                if (!this.isBreak) return;
+
+                clearInterval(this.breakTimer);
+                this.breakScreen.style.display = 'none';
+                this.isBreak = false;
+                this.resetTimer();
+                
+                // Only auto-start next session if not a movement break
+                if (this.studyTime > 0) {
+                    this.startTimer();
+                }
+            }
+            
+            pauseTimer() {
+                if (this.isRunning) {
+                    clearInterval(this.timer);
+                    this.isRunning = false;
+                    this.pausedTimeLeft = this.timeLeft;
+                    this.startBtn.textContent = 'RESUME';
+                    this.modeText.textContent = 'PAUSED';
+                    this.modeText.className = '';
+                    this.queueNotification("Paused - don't wait too long!");
+                }
+            }
+            
+            stopTimer() {
+                clearInterval(this.timer);
+                this.isRunning = false;
+                this.isBreak = false;
+                this.pausedTimeLeft = 0;
+                
+                // Unlock preset buttons
+                this.presetButtons.forEach(btn => btn.disabled = false);
+                this.customPresetBtn.disabled = false;
+                
+                this.resetTimer();
+                this.queueNotification("Timer stopped");
+            }
+            
+            resetTimer() {
+                this.timeLeft = this.studyTime * 60;
+                this.totalTime = this.studyTime * 60;
+                this.updateDisplay();
+                this.startBtn.textContent = 'START';
+                this.modeText.textContent = 'READY';
+                this.modeText.className = '';
+            }
+            
+            showOverwhelmPanel() {
+                this.overwhelmPanel.classList.add('show');
+                if (this.isRunning) this.pauseTimer();
+            }
+            
+            hideOverwhelmPanel() {
+                this.overwhelmPanel.classList.remove('show');
+            }
+            
+            showSettings() {
+                this.settingsPanel.classList.add('show');
+                this.studyDurationInput.value = this.customStudyTime;
+                this.breakDurationInput.value = this.customBreakTime;
+                this.studySoundCheck.checked = this.settings.studySoundEnabled;
+                this.breakSoundCheck.checked = this.settings.breakSoundEnabled;
+                
+                // Set active theme in settings
+                this.themeOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.theme === this.currentTheme) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+            
+            hideSettings() {
+                this.settingsPanel.classList.remove('show');
+            }
+            
+            saveSettings() {
+                this.customStudyTime = parseInt(this.studyDurationInput.value) || 25;
+                this.customBreakTime = parseInt(this.breakDurationInput.value) || 5;
+
+                if (this.customPresetBtn.classList.contains('active')) {
+                    this.studyTime = this.customStudyTime;
+                    this.breakTime = this.customBreakTime;
+                    this.resetTimer();
+                }
+                
+                this.settings = {
+                    studySoundEnabled: this.studySoundCheck.checked,
+                    breakSoundEnabled: this.breakSoundCheck.checked,
+                    customStudySound: this.settings.customStudySound,
+                    customBreakSound: this.settings.customBreakSound,
+                    theme: this.currentTheme
+                };
+                
+                const activeButton = document.querySelector('.preset-btn.active');
+                localStorage.setItem('pomodoroSettings', JSON.stringify({
+                    studyTime: this.studyTime,
+                    breakTime: this.breakTime,
+                    customStudyTime: this.customStudyTime,
+                    customBreakTime: this.customBreakTime,
+                    settings: this.settings,
+                    activePresetId: activeButton ? activeButton.id : null,
+                    isRunning: this.isRunning,
+                    isBreak: this.isBreak,
+                    timeLeft: this.timeLeft,
+                    totalTime: this.totalTime,
+                    breakTimeLeft: this.breakTimeLeft,
+                    totalBreakTime: this.totalBreakTime,
+                    startTime: this.isRunning ? Date.now() - ((this.totalTime - this.timeLeft) * 1000) : null,
+                    pausedTimeLeft: this.pausedTimeLeft
+                }));
+                
+                // Apply theme
+                document.body.className = `theme-${this.currentTheme}`;
+                
+                this.hideSettings();
+                this.queueNotification("Settings saved!");
+            }
+            
+            loadSettings() {
+                const saved = localStorage.getItem('pomodoroSettings');
+                if (saved) {
+                    const { 
+                        studyTime, 
+                        breakTime, 
+                        settings, 
+                        customStudyTime, 
+                        customBreakTime, 
+                        activePresetId,
+                        isRunning,
+                        isBreak,
+                        timeLeft,
+                        totalTime,
+                        breakTimeLeft,
+                        totalBreakTime,
+                        startTime,
+                        pausedTimeLeft
+                    } = JSON.parse(saved);
+                    
+                    this.studyTime = studyTime || 0;
+                    this.breakTime = breakTime || 0;
+                    this.settings = settings || this.settings;
+                    this.customStudyTime = customStudyTime || 25;
+                    this.customBreakTime = customBreakTime || 5;
+                    this.currentTheme = settings?.theme || 'dark-ocean';
+                    this.isRunning = isRunning || false;
+                    this.isBreak = isBreak || false;
+                    this.timeLeft = timeLeft || 0;
+                    this.totalTime = totalTime || 0;
+                    this.breakTimeLeft = breakTimeLeft || 0;
+                    this.totalBreakTime = totalBreakTime || 0;
+                    this.pausedTimeLeft = pausedTimeLeft || 0;
+
+                    this.studyDurationInput.value = this.customStudyTime;
+                    this.breakDurationInput.value = this.customBreakTime;
+                    
+                    // Load custom sounds
+                    if (this.settings.customStudySound) {
+                        this.customStudySound.src = this.settings.customStudySound;
+                    }
+                    if (this.settings.customBreakSound) {
+                        this.customBreakSound.src = this.settings.customBreakSound;
+                    }
+                    
+                    // Apply theme
+                    document.body.className = `theme-${this.currentTheme}`;
+                    
+                    // Restore active preset if any
+                    if (activePresetId) {
+                        const btn = document.getElementById(activePresetId);
+                        if (btn) {
+                            btn.classList.add('active');
+                            this.modeText.textContent = this.isRunning ? 
+                                (this.isBreak ? 'BREAK MODE' : 'FOCUS MODE') : 
+                                'READY';
+                            this.modeText.className = this.isBreak ? 'break-mode' : 
+                                                      (this.isRunning ? 'study-mode' : '');
+                        }
+                    }
+                    
+                    // Restore timer state if running
+                    if (this.isRunning) {
+                        if (this.isBreak) {
+                            this.startBreak();
+                            if (startTime) {
+                                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                                this.breakTimeLeft = Math.max(0, this.totalBreakTime - elapsed);
+                                this.breakTimerDisplay.textContent = 
+                                    `${Math.floor(this.breakTimeLeft / 60).toString().padStart(2, '0')}:` +
+                                    `${(this.breakTimeLeft % 60).toString().padStart(2, '0')}`;
+                            }
+                        } else {
+                            this.startTime = startTime || Date.now();
+                            this.timer = setInterval(() => this.updateTimer(), 1000);
+                            this.startBtn.textContent = 'FOCUSING...';
+                            this.presetButtons.forEach(btn => btn.disabled = true);
+                            this.customPresetBtn.disabled = true;
+                        }
+                    } else if (this.pausedTimeLeft > 0) {
+                        this.timeLeft = this.pausedTimeLeft;
+                        this.totalTime = this.studyTime * 60;
+                        this.startBtn.textContent = 'RESUME';
+                        this.modeText.textContent = 'PAUSED';
+                        this.modeText.className = '';
+                    } else if (this.studyTime > 0) {
+                        this.resetTimer();
+                    }
+                }
+            }
+            
+            toggleMinimalMode() {
+                this.minimalMode = !this.minimalMode;
+                if (this.minimalMode) {
+                    this.container.classList.add('minimal-mode');
+                    this.minimalToggle.textContent = 'Normal Mode';
+                } else {
+                    this.container.classList.remove('minimal-mode');
+                    this.minimalToggle.textContent = 'Minimal Mode';
+                }
+            }
+            
+            updateDisplay() {
+                const minutes = Math.floor(this.timeLeft / 60);
+                const seconds = this.timeLeft % 60;
+                this.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update visual timer
+                const progressPercent = ((this.totalTime - this.timeLeft) / this.totalTime) * 100;
+                this.timerSegment.style.width = `${progressPercent}%`;
+                
+                // Color changes based on theme and mode
+                if (this.isBreak) {
+                    this.timerDisplay.style.color = 'var(--timer-break-color)';
+                    this.timerSegment.style.background = 'var(--timer-break-color)';
+                } else {
+                    this.timerDisplay.style.color = 'var(--timer-study-color)';
+                    this.timerSegment.style.background = 'var(--timer-study-color)';
+                }
+            }
+            
+            queueNotification(message, duration = 3000) {
+                this.notificationQueue.push({ message, duration });
+                if (!this.isShowingNotification) {
+                    this.showNextNotification();
+                }
+            }
+            
+            showNextNotification() {
+                if (this.notificationQueue.length === 0) {
+                    this.isShowingNotification = false;
+                    return;
+                }
+                
+                this.isShowingNotification = true;
+                const { message, duration } = this.notificationQueue.shift();
+                
+                // Hide current notification if showing
+                if (this.notificationEl.classList.contains('show')) {
+                    this.notificationEl.classList.remove('show');
+                    this.notificationEl.classList.add('hide');
+                    
+                    // Wait for hide animation to complete
+                    setTimeout(() => {
+                        this.showNotification(message, duration);
+                    }, 300); // Match this with CSS transition duration
+                } else {
+                    this.showNotification(message, duration);
+                }
+            }
+            
+            showNotification(message, duration) {
+                this.notificationEl.textContent = message;
+                this.notificationEl.classList.remove('hide');
+                this.notificationEl.classList.add('show');
+                
+                setTimeout(() => {
+                    this.notificationEl.classList.remove('show');
+                    this.notificationEl.classList.add('hide');
+                    
+                    setTimeout(() => {
+                        this.showNextNotification();
+                    }, 300); // Match this with CSS transition duration
+                }, duration);
+            }
+            
+            vibrate(pattern) {
+                if ('vibrate' in navigator) {
+                    if (Array.isArray(pattern)) {
+                        navigator.vibrate(pattern);
+                    } else {
+                        navigator.vibrate(pattern || 200);
+                    }
+                }
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const timer = new PomodoroTimer();
+        });
+    </script>
+</body>
+</html>
