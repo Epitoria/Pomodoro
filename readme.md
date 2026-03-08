@@ -2,6 +2,7 @@
 
 A feature-rich, beautifully designed Pomodoro timer application with multiple themes, customizable timers, and focus assistance tools. Built with vanilla HTML, CSS, and JavaScript.
 
+
 ## ✨ Features
 
 ### 🎯 Core Timer Functionality
@@ -87,10 +88,6 @@ No build process, no dependencies—just open and use.
 | Study Sound | Enable/disable + custom upload |
 | Break Sound | Enable/disable + custom upload |
 
-## 🎮 Keyboard Shortcuts
-
-*Note: Keyboard shortcuts can be added via browser extensions or custom modifications*
-
 ## 📱 Responsive Design
 
 Works seamlessly on:
@@ -117,24 +114,6 @@ pomodoro-timer/
 └── screenshot.png      # App screenshot (optional)
 ```
 
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
-
-### Ideas for Contributions
-- Additional themes
-- Keyboard shortcuts
-- Statistics tracking
-- Export/import settings
-- PWA support
-- More "I'm stuck" options
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgments
 
