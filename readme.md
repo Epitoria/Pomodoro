@@ -2,8 +2,6 @@
 
 A feature-rich, beautifully designed Pomodoro timer application with multiple themes, customizable timers, and focus assistance tools. Built with vanilla HTML, CSS, and JavaScript.
 
-![Pomodoro Timer](screenshot-placeholder.png)
-
 ## ✨ Features
 
 ### 🎯 Core Timer Functionality
